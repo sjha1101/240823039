@@ -1,3 +1,4 @@
+//To do the sum of all natural number
 function findSum(n) {
     let sum = 0;
     for (let i = 1; i <= n; i++)
