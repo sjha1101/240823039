@@ -37,22 +37,22 @@ Songs.find()
   });
 
 //to create a new record
-// const newSong = new Songs({
-//   title: "Vandematram",
-//   artist: "Arijit Singh",
-//   category: "Patrotic",
-//   album: "Patrotic",
-//   url: "https://bajaao.pendujatt.com.se/load/128/66780039/2136806/Aavan Jaavan.mp3",
-//   photo:
-//     "https://pendujatt.com.se/uploads/album/aavan-jaavan-from-war-2-pritam.webp",
-//   year: 2022,
-// });
+const newSong = new Songs({
+  title: "Vandematram",
+  artist: "Arijit Singh",
+  category: "Patrotic",
+  album: "Patrotic",
+  url: "https://bajaao.pendujatt.com.se/load/128/66780039/2136806/Aavan Jaavan.mp3",
+  photo:
+    "https://pendujatt.com.se/uploads/album/aavan-jaavan-from-war-2-pritam.webp",
+  year: 2022,
+});
 
-// newSong
-//   .save()
-//   .then(() => {
-//     console.log("New song added successfully");
-//   })
-//   .catch((error) => {
-//     console.error("Error adding new song:", error);
-//   });
+newSong
+  .save()
+  .then(() => {
+    console.log("New song added successfully");
+  })
+  .catch((error) => {
+    console.error("Error adding new song:", error);
+  });
