@@ -5,7 +5,7 @@ const {
   createValidator,
   updateValidator,
   validate, 
-} = require("../validators/studentValidatator");
+} = require("../validators/studentValidatator");  
 
 Router.get("/index", studentController.index);
 Router.get("/show/:id", studentController.show);
