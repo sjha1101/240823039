@@ -1,0 +1,19 @@
+{
+  "name": "live-chat",
+  "version": "1.0.0",
+  "description": "Live Chat with Socket.IO and Emojis",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "author": "Surbhi Jha",
+  "license": "ISC",
+  "keywords": []
+}

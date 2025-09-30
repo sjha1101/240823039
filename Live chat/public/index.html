@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Step-by-step Join Chat</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#f0f2f5;
+         display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+    .card{width:420px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.12);overflow:hidden}
+    .panel{padding:20px}
+    .title{text-align:center;font-weight:700;margin-bottom:12px}
+    .small{color:#666;font-size:13px;margin-bottom:10px;text-align:center}
+    input,select{padding:10px;border:1px solid #ddd;border-radius:8px;font-size:15px;outline:none}
+    button{padding:10px 14px;border-radius:8px;border:0;background:#2e7bff;color:white;cursor:pointer;font-weight:600}
+    button:disabled{opacity:.6;cursor:not-allowed}
+    #chatWindow{display:none;flex-direction:column;height:560px}
+    .header{background:linear-gradient(90deg,#667eea,#764ba2);color:#fff;padding:14px;text-align:center;font-weight:700}
+    #messages{flex:1;overflow-y:auto;padding:16px;list-style:none;margin:0;background:#fafafa}
+    #messages li{max-width:75%;padding:10px 14px;border-radius:18px;margin-bottom:10px;word-wrap:break-word}
+    .my{background:linear-gradient(120deg,#6a11cb,#2575fc);color:#fff;margin-left:auto;text-align:right}
+    .other{background:#e4e6eb;color:#000;margin-right:auto;text-align:left}
+    .system{ text-align:center;color:#666;font-style:italic;font-size:13px }
+    .composer{display:flex;padding:12px;border-top:1px solid #eee;background:#fff}
+    .composer input{flex:1;padding:10px;border:1px solid #ddd;border-radius:10px;margin-right:8px}
+    .composer button{padding:10px 14px;border-radius:10px;border:0;background:#2e7bff;color:#fff}
+    @media (max-width:460px){ .card{width:92vw} }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <!-- Step 1: name + emoji form -->
+    <div class="panel" id="entryPanel">
+      <div class="title">Welcome to Live Chat</div>
+      <div class="small">Step 1: Enter your name & choose an emoji</div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <input id="nameInput" type="text" placeholder="Your name (e.g., Surbhi)" />
+        <select id="emojiSelect">
+          <option value="😂">😂</option>
+<option value="😊">😊</option>
+<option value="😍">😍</option>
+<option value="😘">😘</option>
+<option value="😅">😅</option>
+<option value="😉">😉</option>
+<option value="😇">😇</option>
+<option value="🥰">🥰</option>
+<option value="🤔">🤔</option>
+<option value="😴">😴</option>
+<option value="🤯">🤯</option>
+<option value="😬">😬</option>
+<option value="😭">😭</option>
+<option value="😡">😡</option>
+<option value="🤗">🤗</option>
+<option value="👍">👍</option>
+<option value="👎">👎</option>
+<option value="🙏">🙏</option>
+<option value="🔥">🔥</option>
+<option value="🌟">🌟</option>
+        </select>
+        <button id="joinBtn">Join</button>
+      </div>
+    </div>
+
+    <!-- Chat window (hidden until join) -->
+    <div id="chatWindow">
+      <div class="header">💬 Live Chat</div>
+      <ul id="messages"></ul>
+
+      <div class="composer">
+        <input id="msgInput" type="text" placeholder="Type a message..." />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    const entryPanel = document.getElementById('entryPanel');
+    const nameInput = document.getElementById('nameInput');
+    const emojiSelect = document.getElementById('emojiSelect');
+    const joinBtn = document.getElementById('joinBtn');
+
+    const chatWindow = document.getElementById('chatWindow');
+    const messages = document.getElementById('messages');
+    const msgInput = document.getElementById('msgInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    let myName = null;
+    let myEmoji = null;
+
+    // Join
+    joinBtn.addEventListener('click', () => {
+      const name = nameInput.value.trim();
+      const emoji = emojiSelect.value;
+      if (!name) { alert('Please enter your name'); return; }
+      myName = name;
+      myEmoji = emoji;
+      entryPanel.style.display = 'none';
+      chatWindow.style.display = 'flex';
+      msgInput.focus();
+      socket.emit('join chat', { name, emoji });
+    });
+
+    // Send message
+    function sendMessage(){
+      const text = msgInput.value.trim();
+      if (!text) return;
+      appendMessage({ user: myName, emoji: myEmoji, msg: text }, true);
+      socket.emit('chat message', text);
+      msgInput.value = '';
+    }
+    sendBtn.addEventListener('click', sendMessage);
+    msgInput.addEventListener('keydown', (e)=>{ if(e.key==="Enter"){ e.preventDefault(); sendMessage(); }});
+
+    // Receive messages
+    socket.on("chat message", (data) => {
+      if (data.user === "System") {
+        addSystemMessage(data.msg);
+      } else {
+        appendMessage(data, false);
+      }
+    });
+
+    // Append chat messages
+    function appendMessage({ user, emoji, msg }, isMy){
+      const li = document.createElement('li');
+      li.className = isMy ? 'my' : 'other';
+      li.innerHTML = `<strong>${emoji} ${user}</strong>: ${msg}`;
+      messages.appendChild(li);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    // System messages
+    function addSystemMessage(text){
+      const li = document.createElement('li');
+      li.className = 'system';
+      li.textContent = text;
+      messages.appendChild(li);
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+</body>
+</html>
