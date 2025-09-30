@@ -1,0 +1,40 @@
+{
+  "name": "pratical",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    "express": "^5.1.0",
+    "install": "^0.13.0",
+    "nodemon": "^3.1.10",
+    "path": "^0.12.7"
+=======
+>>>>>>> 5913d90 (crud with sql)
+=======
+>>>>>>> d0db2e3e61260da7834678ed5825d13082d6c409
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "i": "^0.3.7",
+    "install": "^0.13.0",
+    "mysql2": "^3.15.0",
+    "nodemon": "^3.1.10",
+    "path": "^0.12.7",
+    "sequelize": "^6.37.7"
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d0db2e3 (Multer)
+>>>>>>> 5913d90 (crud with sql)
+=======
+>>>>>>> d0db2e3e61260da7834678ed5825d13082d6c409
+  }
+}

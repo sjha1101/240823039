@@ -1,0 +1,5 @@
+npm init -y
+npm install i
+npm install express 
+npm install multer
+npm i path
