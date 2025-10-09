@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://Surbhi_1101:12345@cluster0.rr6b6ga.mongodb.net/music?retryWrites=true&w=majority&appName=Cluster0", {
+mongoose.connect("mongodb path", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
